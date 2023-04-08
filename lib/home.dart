@@ -24,14 +24,16 @@ class _HomeState extends State<Home> {
     loadData();
   }
 
-  TextEditingController nameController = TextEditingController();
+  TextEditingController titleController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController discriptionController = TextEditingController();
   TextEditingController ageController = TextEditingController();
 
   void clearText() {
-    nameController.clear();
+    titleController.clear();
     emailController.clear();
+    ageController.clear();
+    discriptionController.clear();
   }
 
   @override
@@ -55,74 +57,93 @@ class _HomeState extends State<Home> {
                       child: CircularProgressIndicator(),
                     );
                   } else {
-                    return ListView.builder(
-                      reverse: true,
-                      physics: NeverScrollableScrollPhysics(),
+                    return GridView.builder(
                       shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount:
+                            MediaQuery.of(context).size.width < 400 ? 2 : 4,
+                      ),
                       itemCount: snapshot.data!.length,
                       itemBuilder: (BuildContext context, int index) {
                         var data = snapshot.data![index];
                         return Card(
-                          elevation: 2,
-                          child: ListTile(
-                            leading:
-                                CircleAvatar(child: Text(data.id.toString())),
-                            title: Text(data.title),
-                            subtitle: Text(data.email),
-                            trailing: SizedBox(
-                              child: SizedBox(
-                                width: 100,
-                                child: Row(
-                                  children: [
-                                    IconButton(
-                                      onPressed: () {
-                                        setState(() {
-                                          loadData();
-                                        });
-                                        dbHelper!.update(
-                                          NoteModel(
-                                            id: data.id,
-                                            title: 'new title',
-                                            age: 11,
-                                            description: 'new description',
-                                            email: 'new email',
-                                          ),
-                                        );
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(
-                                          SnackBar(
-                                            backgroundColor:
-                                                Theme.of(context).primaryColor,
-                                            content: Text('Updated'),
-                                          ),
-                                        );
-                                      },
-                                      icon: Icon(Icons.edit),
+                            elevation: 2,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      // Text(data.id.toString()),
+                                      Text(data.title),
+                                      Text(data.email),
+                                      Text(data.description, maxLines: 3),
+                                    ],
+                                  ),
+                                  Container(
+                                    color: themeColor.focusColor,
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        IconButton(
+                                          onPressed: () {
+                                            setState(() {
+                                              loadData();
+                                            });
+                                            dbHelper!.update(
+                                              NoteModel(
+                                                id: data.id,
+                                                title: 'new title',
+                                                age: 11,
+                                                description: 'new description',
+                                                email: 'new email',
+                                              ),
+                                            );
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              SnackBar(
+                                                backgroundColor:
+                                                    Theme.of(context)
+                                                        .primaryColor,
+                                                content: Text('Updated'),
+                                              ),
+                                            );
+                                          },
+                                          icon: Icon(Icons.edit),
+                                        ),
+                                        IconButton(
+                                          onPressed: () {
+                                            setState(() {
+                                              dbHelper!
+                                                  .delete(data.id!.toInt());
+                                              loadData();
+                                              snapshot.data!.remove(data);
+                                            });
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              SnackBar(
+                                                backgroundColor:
+                                                    Theme.of(context)
+                                                        .primaryColor,
+                                                content: Text('Deleted'),
+                                              ),
+                                            );
+                                          },
+                                          icon: Icon(Icons.delete),
+                                        ),
+                                      ],
                                     ),
-                                    IconButton(
-                                      onPressed: () {
-                                        setState(() {
-                                          dbHelper!.delete(data.id!.toInt());
-                                          loadData();
-                                          snapshot.data!.remove(data);
-                                        });
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(
-                                          SnackBar(
-                                            backgroundColor:
-                                                Theme.of(context).primaryColor,
-                                            content: Text('Deleted'),
-                                          ),
-                                        );
-                                      },
-                                      icon: Icon(Icons.delete),
-                                    ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
-                            ),
-                          ),
-                        );
+                            ));
                       },
                     );
                   }
@@ -165,9 +186,9 @@ class _HomeState extends State<Home> {
                               Padding(
                                 padding: const EdgeInsets.only(bottom: 8),
                                 child: TextFormField(
-                                  controller: nameController,
+                                  controller: titleController,
                                   decoration: InputDecoration(
-                                    labelText: 'Name',
+                                    labelText: 'Title',
                                     enabledBorder: OutlineInputBorder(
                                       borderSide: BorderSide(
                                         color: Colors.transparent,
@@ -252,9 +273,10 @@ class _HomeState extends State<Home> {
                                     dbHelper!
                                         .insert(
                                           NoteModel(
-                                            title: nameController.text,
-                                            age: 0,
-                                            description: '',
+                                            title: titleController.text,
+                                            age: int.parse(ageController.text),
+                                            description:
+                                                discriptionController.text,
                                             email: emailController.text.trim(),
                                           ),
                                         )

@@ -24,21 +24,23 @@ class _HomeState extends State<Home> {
     loadData();
   }
 
-  TextEditingController titleController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController discriptionController = TextEditingController();
   TextEditingController ageController = TextEditingController();
+  TextEditingController addressController = TextEditingController();
 
   void clearText() {
-    titleController.clear();
+    nameController.clear();
     emailController.clear();
     ageController.clear();
     discriptionController.clear();
+    addressController.clear();
   }
 
   @override
   Widget build(BuildContext context) {
-    print('home build-----------------');
+    print('build-----------------');
     var themeColor = Theme.of(context);
 
     return SafeArea(
@@ -58,6 +60,7 @@ class _HomeState extends State<Home> {
                     );
                   } else {
                     return GridView.builder(
+                      reverse: true,
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -81,9 +84,11 @@ class _HomeState extends State<Home> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       // Text(data.id.toString()),
-                                      Text(data.title),
+                                      Text(data.name),
                                       Text(data.email),
                                       Text(data.description, maxLines: 3),
+                                      Text(data.address),
+                                      Text(data.age.toString()),
                                     ],
                                   ),
                                   Container(
@@ -97,22 +102,271 @@ class _HomeState extends State<Home> {
                                             setState(() {
                                               loadData();
                                             });
-                                            dbHelper!.update(
-                                              NoteModel(
-                                                id: data.id,
-                                                title: 'new title',
-                                                age: 11,
-                                                description: 'new description',
-                                                email: 'new email',
-                                              ),
-                                            );
-                                            ScaffoldMessenger.of(context)
-                                                .showSnackBar(
-                                              SnackBar(
-                                                backgroundColor:
-                                                    Theme.of(context)
-                                                        .primaryColor,
-                                                content: Text('Updated'),
+
+                                            showBarModalBottomSheet(
+                                              context: context,
+                                              builder: (context) => SizedBox(
+                                                height: 500,
+                                                child: SafeArea(
+                                                  child: Scaffold(
+                                                    body: SingleChildScrollView(
+                                                      child: Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(8.0),
+                                                        child: Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            SizedBox(
+                                                                height: 20),
+                                                            Text(
+                                                              'Update Notes',
+                                                              textScaleFactor:
+                                                                  2,
+                                                              style: TextStyle(
+                                                                shadows: [
+                                                                  Shadow(
+                                                                    blurRadius:
+                                                                        3,
+                                                                    color: Colors
+                                                                        .grey,
+                                                                    offset:
+                                                                        Offset(
+                                                                            2,
+                                                                            2),
+                                                                  )
+                                                                ],
+                                                              ),
+                                                            ),
+                                                            SizedBox(
+                                                                height: 20),
+                                                            Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                          .only(
+                                                                      bottom:
+                                                                          8),
+                                                              child:
+                                                                  TextFormField(
+                                                                controller:
+                                                                    nameController,
+                                                                decoration:
+                                                                    InputDecoration(
+                                                                  labelText:
+                                                                      'Name',
+                                                                  enabledBorder:
+                                                                      OutlineInputBorder(
+                                                                    borderSide:
+                                                                        BorderSide(
+                                                                      color: Colors
+                                                                          .transparent,
+                                                                    ),
+                                                                  ),
+                                                                  focusedBorder:
+                                                                      OutlineInputBorder(
+                                                                    borderSide:
+                                                                        BorderSide(
+                                                                      color: themeColor
+                                                                          .primaryColor,
+                                                                    ),
+                                                                  ),
+                                                                  filled: true,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                          .only(
+                                                                      bottom:
+                                                                          8),
+                                                              child:
+                                                                  TextFormField(
+                                                                controller:
+                                                                    emailController,
+                                                                decoration:
+                                                                    InputDecoration(
+                                                                  labelText:
+                                                                      'Email',
+                                                                  enabledBorder:
+                                                                      OutlineInputBorder(
+                                                                    borderSide:
+                                                                        BorderSide(
+                                                                      color: Colors
+                                                                          .transparent,
+                                                                    ),
+                                                                  ),
+                                                                  focusedBorder:
+                                                                      OutlineInputBorder(
+                                                                    borderSide:
+                                                                        BorderSide(
+                                                                      color: themeColor
+                                                                          .primaryColor,
+                                                                    ),
+                                                                  ),
+                                                                  filled: true,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                          .only(
+                                                                      bottom:
+                                                                          8),
+                                                              child:
+                                                                  TextFormField(
+                                                                controller:
+                                                                    discriptionController,
+                                                                decoration:
+                                                                    InputDecoration(
+                                                                  labelText:
+                                                                      'Description',
+                                                                  enabledBorder:
+                                                                      OutlineInputBorder(
+                                                                    borderSide:
+                                                                        BorderSide(
+                                                                      color: Colors
+                                                                          .transparent,
+                                                                    ),
+                                                                  ),
+                                                                  focusedBorder:
+                                                                      OutlineInputBorder(
+                                                                    borderSide:
+                                                                        BorderSide(
+                                                                      color: themeColor
+                                                                          .primaryColor,
+                                                                    ),
+                                                                  ),
+                                                                  filled: true,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                          .only(
+                                                                      bottom:
+                                                                          8),
+                                                              child:
+                                                                  TextFormField(
+                                                                controller:
+                                                                    addressController,
+                                                                decoration:
+                                                                    InputDecoration(
+                                                                  labelText:
+                                                                      'Address',
+                                                                  enabledBorder:
+                                                                      OutlineInputBorder(
+                                                                    borderSide:
+                                                                        BorderSide(
+                                                                      color: Colors
+                                                                          .transparent,
+                                                                    ),
+                                                                  ),
+                                                                  focusedBorder:
+                                                                      OutlineInputBorder(
+                                                                    borderSide:
+                                                                        BorderSide(
+                                                                      color: themeColor
+                                                                          .primaryColor,
+                                                                    ),
+                                                                  ),
+                                                                  filled: true,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                          .only(
+                                                                      bottom:
+                                                                          8),
+                                                              child:
+                                                                  TextFormField(
+                                                                keyboardType:
+                                                                    TextInputType
+                                                                        .number,
+                                                                controller:
+                                                                    ageController,
+                                                                decoration:
+                                                                    InputDecoration(
+                                                                  labelText:
+                                                                      'Age',
+                                                                  enabledBorder:
+                                                                      OutlineInputBorder(
+                                                                    borderSide:
+                                                                        BorderSide(
+                                                                      color: Colors
+                                                                          .transparent,
+                                                                    ),
+                                                                  ),
+                                                                  focusedBorder:
+                                                                      OutlineInputBorder(
+                                                                    borderSide:
+                                                                        BorderSide(
+                                                                      color: themeColor
+                                                                          .primaryColor,
+                                                                    ),
+                                                                  ),
+                                                                  filled: true,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            Center(
+                                                              child:
+                                                                  ElevatedButton(
+                                                                onPressed: () {
+                                                                  setState(() {
+                                                                    loadData();
+                                                                  });
+                                                                  dbHelper!
+                                                                      .update(
+                                                                    NoteModel(
+                                                                      id: data
+                                                                          .id,
+                                                                      name: nameController
+                                                                          .text,
+                                                                      age: int.parse(
+                                                                          ageController
+                                                                              .text),
+                                                                      description:
+                                                                          discriptionController
+                                                                              .text,
+                                                                      email: emailController
+                                                                          .text,
+                                                                      address:
+                                                                          addressController
+                                                                              .text,
+                                                                    ),
+                                                                  );
+                                                                  clearText();
+                                                                  ScaffoldMessenger.of(
+                                                                          context)
+                                                                      .showSnackBar(
+                                                                    SnackBar(
+                                                                      backgroundColor:
+                                                                          Theme.of(context)
+                                                                              .primaryColor,
+                                                                      content: Text(
+                                                                          'Updated'),
+                                                                    ),
+                                                                  );
+                                                                  Navigator.pop(
+                                                                      context);
+                                                                },
+                                                                child: Text(
+                                                                    'Update'),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
                                               ),
                                             );
                                           },
@@ -163,143 +417,161 @@ class _HomeState extends State<Home> {
                     body: SingleChildScrollView(
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: SingleChildScrollView(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(height: 20),
-                              Text(
-                                'Add Notes',
-                                textScaleFactor: 2,
-                                style: TextStyle(
-                                  color: themeColor.primaryColor,
-                                  shadows: [
-                                    Shadow(
-                                      blurRadius: 3,
-                                      color: Colors.grey,
-                                      offset: Offset(2, 2),
-                                    )
-                                  ],
-                                ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(height: 20),
+                            Text(
+                              'Add Notes',
+                              textScaleFactor: 2,
+                              style: TextStyle(
+                                shadows: [
+                                  Shadow(
+                                    blurRadius: 3,
+                                    color: Colors.grey,
+                                    offset: Offset(2, 2),
+                                  )
+                                ],
                               ),
-                              SizedBox(height: 20),
-                              Padding(
-                                padding: const EdgeInsets.only(bottom: 8),
-                                child: TextFormField(
-                                  controller: titleController,
-                                  decoration: InputDecoration(
-                                    labelText: 'Title',
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                        color: Colors.transparent,
-                                      ),
+                            ),
+                            SizedBox(height: 20),
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 8),
+                              child: TextFormField(
+                                controller: nameController,
+                                decoration: InputDecoration(
+                                  labelText: 'name',
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: Colors.transparent,
                                     ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                        color: themeColor.primaryColor,
-                                      ),
-                                    ),
-                                    filled: true,
                                   ),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(bottom: 8),
-                                child: TextFormField(
-                                  controller: emailController,
-                                  decoration: InputDecoration(
-                                    labelText: 'Email',
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                        color: Colors.transparent,
-                                      ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: themeColor.primaryColor,
                                     ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                        color: themeColor.primaryColor,
-                                      ),
-                                    ),
-                                    filled: true,
                                   ),
+                                  filled: true,
                                 ),
                               ),
-                              Padding(
-                                padding: const EdgeInsets.only(bottom: 8),
-                                child: TextFormField(
-                                  controller: discriptionController,
-                                  decoration: InputDecoration(
-                                    labelText: 'Description',
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                        color: Colors.transparent,
-                                      ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 8),
+                              child: TextFormField(
+                                controller: emailController,
+                                decoration: InputDecoration(
+                                  labelText: 'Email',
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: Colors.transparent,
                                     ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                        color: themeColor.primaryColor,
-                                      ),
-                                    ),
-                                    filled: true,
                                   ),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(bottom: 8),
-                                child: TextFormField(
-                                  keyboardType: TextInputType.number,
-                                  controller: ageController,
-                                  decoration: InputDecoration(
-                                    labelText: 'Age',
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                        color: Colors.transparent,
-                                      ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: themeColor.primaryColor,
                                     ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                        color: themeColor.primaryColor,
-                                      ),
-                                    ),
-                                    filled: true,
                                   ),
+                                  filled: true,
                                 ),
                               ),
-                              Center(
-                                child: ElevatedButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      loadData();
-                                    });
-                                    dbHelper!
-                                        .insert(
-                                          NoteModel(
-                                            title: titleController.text,
-                                            age: int.parse(ageController.text),
-                                            description:
-                                                discriptionController.text,
-                                            email: emailController.text.trim(),
-                                          ),
-                                        )
-                                        .then((value) => print('Data added'))
-                                        .onError(
-                                          (error, stackTrace) =>
-                                              print(error.toString()),
-                                        );
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                        backgroundColor:
-                                            Theme.of(context).primaryColor,
-                                        content: Text('Added'),
-                                      ),
-                                    );
-                                    Navigator.pop(context);
-                                    clearText();
-                                  },
-                                  child: Text('Add'),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 8),
+                              child: TextFormField(
+                                controller: discriptionController,
+                                decoration: InputDecoration(
+                                  labelText: 'Description',
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: Colors.transparent,
+                                    ),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: themeColor.primaryColor,
+                                    ),
+                                  ),
+                                  filled: true,
                                 ),
                               ),
-                            ],
-                          ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 8),
+                              child: TextFormField(
+                                controller: addressController,
+                                decoration: InputDecoration(
+                                  labelText: 'Address',
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: Colors.transparent,
+                                    ),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: themeColor.primaryColor,
+                                    ),
+                                  ),
+                                  filled: true,
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 8),
+                              child: TextFormField(
+                                keyboardType: TextInputType.number,
+                                controller: ageController,
+                                decoration: InputDecoration(
+                                  labelText: 'Age',
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: Colors.transparent,
+                                    ),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: themeColor.primaryColor,
+                                    ),
+                                  ),
+                                  filled: true,
+                                ),
+                              ),
+                            ),
+                            Center(
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  setState(() {
+                                    loadData();
+                                  });
+                                  dbHelper!
+                                      .insert(
+                                        NoteModel(
+                                          name: nameController.text,
+                                          age: int.parse(ageController.text),
+                                          description:
+                                              discriptionController.text,
+                                          email: emailController.text.trim(),
+                                          address: addressController.text,
+                                        ),
+                                      )
+                                      .then((value) => print('Data added'))
+                                      .onError(
+                                        (error, stackTrace) =>
+                                            print(error.toString()),
+                                      );
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      backgroundColor:
+                                          Theme.of(context).primaryColor,
+                                      content: Text('Added'),
+                                    ),
+                                  );
+                                  Navigator.pop(context);
+                                  clearText();
+                                },
+                                child: Text('Add'),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),

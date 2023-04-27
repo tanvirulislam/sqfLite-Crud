@@ -11,7 +11,7 @@ class DatabaseHelper {
   static final table = "notes";
   static Database? _database;
 
-  Future<Database?> get database async {
+  Future<Database?> get getDatabase async {
     if (_database != null) return _database;
 
     _database = await _initDatabase();
@@ -28,32 +28,37 @@ class DatabaseHelper {
   _onCreate(Database db, int version) async {
     await db.execute(""" CREATE TABLE $table(
       id INTEGER PRIMARY KEY AUTOINCREMENT,
-      title TEXT NOT NULL,
+      name TEXT NOT NULL,
       age INTEGER NOT NULL,
       description TEXT NOT NULL,
-      email TEXT NOT NULL
+      email TEXT NOT NULL,
+      address TEXT NOT NULL
     )""");
   }
 
   Future<NoteModel> insert(NoteModel model) async {
-    var dbClint = await database;
+    var dbClint = await getDatabase;
     await dbClint!.insert(table, model.toMap());
     return model;
   }
 
   Future<List<NoteModel>> getNoteList() async {
-    var dbClint = await database;
-    final List<Map<String, Object?>> queryResult = await dbClint!.query(table);
+    var dbClint = await getDatabase;
+    final queryResult = await dbClint!.query(table);
     return queryResult.map((e) => NoteModel.fromMap(e)).toList();
   }
 
   Future<int> delete(int id) async {
-    var dbClint = await database;
-    return await dbClint!.delete(table, where: 'id=?', whereArgs: [id]);
+    var dbClint = await getDatabase;
+    return await dbClint!.delete(
+      table,
+      where: 'id=?',
+      whereArgs: [id],
+    );
   }
 
-  Future<int> update(NoteModel model) async {
-    var dbClint = await database;
+  update(NoteModel model) async {
+    var dbClint = await getDatabase;
     return await dbClint!.update(
       table,
       model.toMap(),

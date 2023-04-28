@@ -12,15 +12,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => DatabaseHelper(),
+      create: (context) => DatabaseProvider(),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'sqflite',
-
-        theme: ThemeData(
-          primarySwatch: Colors.purple,
-          iconTheme: IconThemeData(color: Colors.purple),
-        ),
+        theme: ThemeData(primarySwatch: Colors.lightBlue),
         // themeMode: ThemeMode.system,
         // darkTheme: ThemeData.dark(),
         home: Home(),

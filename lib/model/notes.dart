@@ -15,7 +15,8 @@ class NoteModel {
     required this.address,
   });
 
-  // We need a method to convert this 'model' into a 'Map', so that we can insert it into a database
+  // We need a method to convert this 'model' into a 'Map',
+  // so that we can insert it into a database
 
   Map<String, Object?> toMap() => {
         'id': id,
@@ -29,14 +30,6 @@ class NoteModel {
   // Whrn we retrive the data from database it will be a 'Map',
   // So we need to convert it back
 
-  // NoteModel.fromMap(Map<String, dynamic> res)
-  //     : id = res['id'],
-  //       name = res['name'],
-  //       age = res['age'],
-  //       description = res['description'],
-  //       email = res['email'],
-  //       address = res['address'];
-
   factory NoteModel.fromMap(Map<String, dynamic> value) => NoteModel(
         id: value['id'],
         name: value['name'],
@@ -45,4 +38,13 @@ class NoteModel {
         email: value['email'],
         address: value['address'],
       );
+
+  // NoteModel.fromMap(Map<String, dynamic> res)
+  //     : id = res['id'],
+  //       name = res['name'],
+  //       age = res['age'],
+  //       description = res['description'],
+  //       email = res['email'],
+  //       address = res['address'];
+
 }

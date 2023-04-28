@@ -6,7 +6,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite_crud/model/notes.dart';
 
-class DatabaseHelper extends ChangeNotifier {
+class DatabaseProvider extends ChangeNotifier {
   static final _databaseName = "note.db";
   static final _databaseVersion = 1;
   static final table = "notes";

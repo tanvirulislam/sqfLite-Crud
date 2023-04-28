@@ -11,7 +11,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  DatabaseHelper? dbHelper;
+  DatabaseProvider? dbHelper;
 
   Future<List<NoteModel>> loadData() async {
     return await dbHelper!.getNoteList();
@@ -20,7 +20,7 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-    dbHelper = DatabaseHelper();
+    dbHelper = DatabaseProvider();
     loadData();
   }
 

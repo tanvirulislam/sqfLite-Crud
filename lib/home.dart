@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:sqflite_crud/db_helper.dart';
-import 'package:sqflite_crud/model/notes.dart';
+import 'package:sqflite_crud/model/profile.dart';
 
 class Home extends StatefulWidget {
   Home({super.key});
@@ -13,7 +13,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   DatabaseProvider? dbHelper;
 
-  Future<List<NoteModel>> loadData() async {
+  Future<List<ProfileModel>> loadData() async {
     return await dbHelper!.getNoteList();
   }
 
@@ -53,7 +53,7 @@ class _HomeState extends State<Home> {
               FutureBuilder(
                 future: loadData(),
                 builder: (BuildContext context,
-                    AsyncSnapshot<List<NoteModel>> snapshot) {
+                    AsyncSnapshot<List<ProfileModel>> snapshot) {
                   if (snapshot.data == null) {
                     return Center(
                       child: CircularProgressIndicator(),
@@ -145,7 +145,7 @@ class _HomeState extends State<Home> {
                                                             Padding(
                                                               padding:
                                                                   const EdgeInsets
-                                                                          .only(
+                                                                      .only(
                                                                       bottom:
                                                                           8),
                                                               child:
@@ -179,7 +179,7 @@ class _HomeState extends State<Home> {
                                                             Padding(
                                                               padding:
                                                                   const EdgeInsets
-                                                                          .only(
+                                                                      .only(
                                                                       bottom:
                                                                           8),
                                                               child:
@@ -213,7 +213,7 @@ class _HomeState extends State<Home> {
                                                             Padding(
                                                               padding:
                                                                   const EdgeInsets
-                                                                          .only(
+                                                                      .only(
                                                                       bottom:
                                                                           8),
                                                               child:
@@ -247,7 +247,7 @@ class _HomeState extends State<Home> {
                                                             Padding(
                                                               padding:
                                                                   const EdgeInsets
-                                                                          .only(
+                                                                      .only(
                                                                       bottom:
                                                                           8),
                                                               child:
@@ -281,7 +281,7 @@ class _HomeState extends State<Home> {
                                                             Padding(
                                                               padding:
                                                                   const EdgeInsets
-                                                                          .only(
+                                                                      .only(
                                                                       bottom:
                                                                           8),
                                                               child:
@@ -324,7 +324,7 @@ class _HomeState extends State<Home> {
                                                                   });
                                                                   dbHelper!
                                                                       .update(
-                                                                    NoteModel(
+                                                                    ProfileModel(
                                                                       id: data
                                                                           .id,
                                                                       name: nameController
@@ -544,7 +544,7 @@ class _HomeState extends State<Home> {
                                   });
                                   dbHelper!
                                       .insert(
-                                        NoteModel(
+                                        ProfileModel(
                                           name: nameController.text,
                                           age: int.parse(ageController.text),
                                           description:

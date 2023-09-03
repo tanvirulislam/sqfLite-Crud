@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:sqflite_crud/model/notes.dart';
+import 'package:sqflite_crud/model/profile.dart';
 
 class DatabaseProvider extends ChangeNotifier {
   static final _databaseName = "note.db";
@@ -37,16 +37,16 @@ class DatabaseProvider extends ChangeNotifier {
     )""");
   }
 
-  Future<NoteModel> insert(NoteModel model) async {
+  Future<ProfileModel> insert(ProfileModel model) async {
     var dbClint = await getDatabase;
     await dbClint!.insert(table, model.toMap());
     return model;
   }
 
-  Future<List<NoteModel>> getNoteList() async {
+  Future<List<ProfileModel>> getNoteList() async {
     var dbClint = await getDatabase;
     final queryResult = await dbClint!.query(table);
-    return queryResult.map((e) => NoteModel.fromMap(e)).toList();
+    return queryResult.map((e) => ProfileModel.fromMap(e)).toList();
   }
 
   Future<int> delete(id) async {
@@ -58,7 +58,7 @@ class DatabaseProvider extends ChangeNotifier {
     );
   }
 
-  update(NoteModel model) async {
+  update(ProfileModel model) async {
     var dbClint = await getDatabase;
     return await dbClint!.update(
       table,

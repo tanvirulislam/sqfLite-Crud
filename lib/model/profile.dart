@@ -1,12 +1,12 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-class NoteModel {
+class ProfileModel {
   final int? id;
   final String name;
   final int age;
   final String description;
   final String email;
   final String address;
-  NoteModel({
+  ProfileModel({
     this.id,
     required this.name,
     required this.age,
@@ -30,7 +30,7 @@ class NoteModel {
   // Whrn we retrive the data from database it will be a 'Map',
   // So we need to convert it back
 
-  factory NoteModel.fromMap(Map<String, dynamic> value) => NoteModel(
+  factory ProfileModel.fromMap(Map<String, dynamic> value) => ProfileModel(
         id: value['id'],
         name: value['name'],
         age: value['age'],
@@ -39,12 +39,11 @@ class NoteModel {
         address: value['address'],
       );
 
-  // NoteModel.fromMap(Map<String, dynamic> res)
+  // ProfileModel.fromMap(Map<String, dynamic> res)
   //     : id = res['id'],
   //       name = res['name'],
   //       age = res['age'],
   //       description = res['description'],
   //       email = res['email'],
   //       address = res['address'];
-
 }

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:sqflite_crud/db_helper.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:sqflite_crud/home.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  databaseFactory = databaseFactoryFfi;
   runApp(const MyApp());
 }
 
@@ -11,8 +13,7 @@ class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => DatabaseProvider(),
+    return ProviderScope(
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'sqflite',

@@ -11,7 +11,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  DatabaseProvider? dbHelper;
+  LocalDb? dbHelper;
 
   Future<List<ProfileModel>> loadData() async {
     return await dbHelper!.getNoteList();
@@ -20,7 +20,7 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-    dbHelper = DatabaseProvider();
+    dbHelper = LocalDb();
     loadData();
   }
 
@@ -40,7 +40,6 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    print('build------------------------------------------------------------');
     var themeColor = Theme.of(context);
 
     return SafeArea(

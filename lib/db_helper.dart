@@ -1,25 +1,23 @@
 import 'dart:async';
 import 'dart:io' as io;
-import 'package:flutter/cupertino.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:sqflite/sqflite.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:sqflite_crud/model/profile.dart';
 
-class DatabaseProvider extends ChangeNotifier {
-  static final _databaseName = "note.db";
+class LocalDb {
+  static final _databaseName = "profile.db";
   static final _databaseVersion = 1;
-  static final table = "notes";
+  static final table = "profile";
   static Database? _database;
 
   Future<Database?> get getDatabase async {
     if (_database != null) return _database;
-
-    _database = await _initDatabase();
+    _database = await initDatabase();
     return _database;
   }
 
-  _initDatabase() async {
+  initDatabase() async {
     io.Directory documentDirectory = await getApplicationDocumentsDirectory();
     String path = join(documentDirectory.path, _databaseName);
     return await openDatabase(path,

@@ -1,0 +1,35 @@
+# apps:
+#    counter:
+#      command: AddYourNote
+#      extensions: [flutter-master]
+#      plugs:
+#        - network
+#        - desktop
+
+# parts:
+#   counter:
+#     source: .
+#     plugin: flutter
+#     flutter-target: lib/main.dart 
+name: add-your-note
+version: '1.0.1'
+summary: Flutter Demo CRUD Application
+description: A demo of CRUD Application using Flutter
+confinement: strict
+base: core18
+grade: stable
+icon: snap/gui/icon.png
+
+apps:
+  add-your-note:
+    command: bin/main.dart
+    plugs:
+      - home
+      - network
+      - unity7
+
+parts:
+  add-your-note:
+    source: .
+    plugin: flutter
+    flutter-channel: stable
